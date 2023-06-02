@@ -1,16 +1,36 @@
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
-  );
-};
+import { Component } from "react";
+import { Form } from "./Form/Form";
+// import { ContactsList } from "./ContactsList/ContactsList";
+
+export class App extends Component {
+  
+  formDataGetter = (data) => {
+    console.log(data);
+    // return data;
+  }
+
+  renderContacts = (data) => {
+    console.log(data);
+
+  }
+
+  render() {
+      return (
+        <>
+          <Form onDataSubmit={this.formDataGetter}/>
+          {/* <ContactsList name={this.data} /> */}
+        </>
+    )
+  }
+}
+// item={this.data.name}
+
+//===========================================
+// import { ContactsForm } from "./Form/Form";
+
+// export const App = () => {
+//   return (
+//     <ContactsForm/>
+//   );
+// };
+//===========================================
