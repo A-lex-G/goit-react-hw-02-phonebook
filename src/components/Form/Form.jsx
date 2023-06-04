@@ -1,103 +1,80 @@
-import { Component } from "react"
-// import { ContactsList } from "components/ContactsList/ContactsList";
+import css from "./Form.module.css"
+import { Component } from "react";
+import { nanoid } from "nanoid";
+
 
 export class Form extends Component {
     state = {
-        contacts: [],
-        name: '',
+        name: "",
+        number: "",
     };
 
-    handleSetName = (e) => {
-        const { name, value } = e.currentTarget;
+    nameInputId = nanoid();
+    numberInputId = nanoid();
+  
+    handleSetState = (e) => {
+        const { name, value } = e.target;
         this.setState({
-            [name]: value
-        })
+            [name]: value,
+        });
     };
-
+  
     handleSubmitForm = (e) => {
         e.preventDefault();
-        this.props.onDataSubmit(this.state);
+        const { name, number } = this.state;
+  
+        if (name !== "" && number !== "") {
+            const contactId = nanoid();
+            const formData = {
+                name: name,
+                number: number,
+                contactId: contactId,
+            };
+  
+        this.props.onDataSubmit(formData);
         this.reset();
+        } 
     };
-    
+  
     reset = () => {
-        this.setState({contacts: [], name: ''})
+        this.setState({
+            name: "",
+            number: "",
+        });
     };
-
+  
     render() {
+        const { name, number } = this.state;
+  
         return (
             <>
-                <form
-                onSubmit={this.handleSubmitForm}
-                action="">
-                    <label htmlFor="">Name
+                <form className={css.form} onSubmit={this.handleSubmitForm} action="">
+                    <label className={css.input_title} htmlFor={this.nameInputId}>Name</label>
                     <input
-                        type="text"
-                        value={this.state.name}
-                        onChange={this.handleSetName}
+                        className={css.form_input}
                         name="name"
+                        id={this.nameInputId}
+                        type="text"
                         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-                        required/>
-                    </label>
-                    <button type="submit">Add contact</button>
+                        value={name}
+                        onChange={this.handleSetState}
+                        required
+                    />
+                    <label className={css.input_title} htmlFor={this.numberInputId}>Number</label>
+                    <input
+                        className={css.form_input}
+                        name="number"   
+                        id={this.numberInputId}
+                        type="tel"
+                        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+                        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+                        value={number}
+                        onChange={this.handleSetState}
+                        required
+                    />
+                    <button className={css.submit_Btn} type="submit">Add contact</button>
                 </form>
-                {/* <ContactsList contactsName={this.state.name} /> */}
-            </>
-        )
-    };
-}
-
-//==============================================================
-// export const Form = ({ onSubmit, name, onChangeName }) => {
-//     return(
-//         <form
-//             onSubmit={onSubmit}
-//             action="">
-//                   <label htmlFor="">Name
-//                       <input
-//                         type="text"
-//                         value={name}
-//                         onChange={onChangeName}
-//                         name="name"
-//                         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-//                         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-//                         required
-//                       />
-//                   </label>
-//                   <button type="submit">Add contact</button>
-//               </form>
-//     )
-// } 
-//=============================================================
-
-// import { ContactsList } from "components/ContactsList/ContactsList";
-// const { Component } = require("react");
-
-// export class ContactsForm extends Component {
-
-//     state = {
-//         contacts: [],
-//         name: ''
-//     }
-
-//   render() {
-//       return (
-//           <>
-//               <form action="">
-//                   <label htmlFor="">Name
-//                       <input
-//                           type="text"
-//                           name="name"
-//                           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-//                           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-//                           required
-//                       />
-//                   </label>
-//                   <button type="button">Add contact</button>
-//               </form>
-//               <ContactsList/>
-//           </>
-//     )
-//   }
-// }
+            </>);
+        }
+    }
